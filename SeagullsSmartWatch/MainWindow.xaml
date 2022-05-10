@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SeagullsSmartWatch"
         mc:Ignorable="d"
-        Title="갈매기의 스마트워치" Height="200" Width="410" ResizeMode="NoResize" SourceInitialized="Window_SourceInitialized"
+        Title="갈매기의 스마트워치" Height="200" Width="410" ResizeMode="NoResize" 
         MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave">
     <Grid>
 
