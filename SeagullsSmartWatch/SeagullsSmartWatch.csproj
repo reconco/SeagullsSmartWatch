@@ -83,7 +83,7 @@
     <Compile Include="Controls\NumberTextbox.xaml.cs">
       <DependentUpon>NumberTextbox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainWindow.Time.cs" />
+    <Compile Include="MainWindow.Notification.cs" />
     <Compile Include="MainWindow.SaveData.cs" />
     <Compile Include="SaveFile.cs" />
     <Compile Include="SettingWindow.xaml.cs">
@@ -91,6 +91,9 @@
     </Compile>
     <Compile Include="SoundPlayer.cs" />
     <Compile Include="WatchSetting.cs" />
+    <Compile Include="Watch\SeagullStopWatch.cs" />
+    <Compile Include="Watch\SeagullTimer.cs" />
+    <Compile Include="Watch\SeagullWatch.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

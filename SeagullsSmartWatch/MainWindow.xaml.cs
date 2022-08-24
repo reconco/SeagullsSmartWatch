@@ -30,6 +30,8 @@ namespace SeagullsSmartWatch
 
         public static bool isMute = false;
 
+        SeagullWatch currentWatch = null;
+        
         DispatcherTimer updateTimer = new DispatcherTimer();
 
         public SoundPlayer soundPlayer = new SoundPlayer();
@@ -55,18 +57,15 @@ namespace SeagullsSmartWatch
         }
         private void updateTick(object sender, EventArgs e)
         {
-            TimeSpan currentTime = stopWatch.Elapsed;
+            TimeSpan currentTime = currentWatch.CurrentTime;
 
-            if (setting.watchType == WatchType.Timer)
-                currentTime = TimerTargetTime - stopWatch.Elapsed;
-
-            updateNotifycation(currentTime);
+            currentWatch.Update();
+            UpdateNotification(currentTime);
 
             if (currentTime.Days > 0)
                 day.Visibility = Visibility.Visible;
             else
                 day.Visibility = Visibility.Hidden;
-
 
             day.Text = currentTime.Days.ToString() + " 일";
             time.Text = currentTime.Hours.ToString("D2") + ":" + currentTime.Minutes.ToString("D2") + ":" + currentTime.Seconds.ToString("D2");
@@ -95,16 +94,16 @@ namespace SeagullsSmartWatch
             {
                 startButton.Content = "일시정지";
 
-                stopWatch.Start();
+                currentWatch.Start();
                 updateTimer.Start();
             }
             else if (buttonText == "일시정지")
             {
                 startButton.Content = "시작";
                 soundPlayer.Stop();
-                stopWatch.Stop();
+                currentWatch.Stop();
 
-                leftNotifyStopWatch.Reset();
+                leftNotifyingStopWatch.Reset();
                 SetTextColor(setting.textColor);
             }
         }
@@ -112,27 +111,41 @@ namespace SeagullsSmartWatch
         private void resetButton_Click(object sender, RoutedEventArgs e)
         {
             Reset();
+            //if (resetButton.Content == "초기화")
+            //{
+            //    Reset();
+            //}
+            //else if(resetButton.Content == "초기화 취소")
+            //{
+            //}
+        }
+
+        private void CreateNewWatch()
+        {
+            if (setting.watchType == WatchType.Timer)
+            {
+                int h = setting.timer_hours;
+                int m = setting.timer_minutes;
+                int s = setting.timer_seconds;
+
+                currentWatch = new SeagullTimer(this, new TimeSpan(h, m, s));
+            }
+            else
+            {
+                currentWatch = new SeagullStopWatch(this);
+            }
         }
 
         public void Reset()
         {
             startButton.Content = "시작";
 
-            stopWatch.Reset();
+            CreateNewWatch();
+            //currentWatch.Reset();
             updateTick(this, null);
             updateTimer.Stop();
 
-            if (setting.watchType == WatchType.Timer)
-            {
-                int h = setting.timer_hours;
-                int m = setting.timer_minutes;
-                int s = setting.timer_seconds;
-                TimerTargetTime = new TimeSpan(h, m, s);
-                updateTick(this, null);
-            }
-
-            nextNotifyTime = new TimeSpan(setting.useNotify_hours, setting.useNotify_minutes, setting.useNotify_seconds);
-            leftNotifyStopWatch.Reset();
+            leftNotifyingStopWatch.Reset();
             SetTextColor(setting.textColor);
 
             soundPlayer.Stop();

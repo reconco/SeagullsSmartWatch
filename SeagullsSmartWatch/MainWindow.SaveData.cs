@@ -40,14 +40,14 @@ namespace SeagullsSmartWatch
             else
                 SaveSettingData();
 
-            if (setting.watchType == WatchType.Timer)
-            {
-                int h = setting.timer_hours;
-                int m = setting.timer_minutes;
-                int s = setting.timer_seconds;
-                TimerTargetTime = new TimeSpan(h, m, s);
-                updateTick(this, null);
-            }
+            //if (setting.watchType == WatchType.Timer)
+            //{
+            //    int h = setting.timer_hours;
+            //    int m = setting.timer_minutes;
+            //    int s = setting.timer_seconds;
+            //    TimerTargetTime = new TimeSpan(h, m, s);
+            //    updateTick(this, null);
+            //}
 
         }
 
