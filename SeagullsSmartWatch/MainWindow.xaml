@@ -16,6 +16,8 @@
             <Button x:Name="startButton" Content="시작" FontSize="15" Click="startButton_Click"></Button>
             <Grid Width="20"/>
             <Button x:Name="resetButton" Content="초기화" FontSize="15" Click="resetButton_Click"></Button>
+            <Grid Width="20"/>
+            <Button x:Name="cancleResetButton" Content="초기화 취소" FontSize="15" IsEnabled="False" Click="cancleResetButton_Click"></Button>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="5,0,0,5">
