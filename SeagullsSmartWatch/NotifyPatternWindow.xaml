@@ -1,0 +1,29 @@
+﻿<Window x:Class="SeagullsSmartWatch.NotifyPatternWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SeagullsSmartWatch"
+        mc:Ignorable="d"
+        Title="갈매기의 스마트워치 알림 패턴" Height="450" Width="430">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="45"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <local:NotifyPatternDataGridControl x:Name="patternDataGridControl" Grid.Row="0" BorderBrush="LightGray" BorderThickness="1" HorizontalAlignment="Center"/>
+        <StackPanel Orientation="Vertical" Grid.Row="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Row="1">
+                <Button Name="addButton" Content="추가" MaxHeight="20" Margin="7,0,7,0" Click="addButton_Click"/>
+                <Button Name="removeButton" Content="삭제" MaxHeight="20" Margin="7,0,7,0" Click="removeButton_Click"/>
+                <Button Name="helpButton" Content="도움말" MaxHeight="20" Margin="7,0,7,0" Click="helpButton_Click"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1">
+                <Button Name="okButton" Content="확인" FontSize="15"/>
+                <Grid Width="20"/>
+                <Button Name="cancleButton" Content="취소" FontSize="15"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

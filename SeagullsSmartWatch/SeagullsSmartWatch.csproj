@@ -80,11 +80,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\NotifyPatternControl.xaml.cs">
+      <DependentUpon>NotifyPatternControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NotifyPatternDataGridControl.xaml.cs">
+      <DependentUpon>NotifyPatternDataGridControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\NumberTextbox.xaml.cs">
       <DependentUpon>NumberTextbox.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.Notification.cs" />
     <Compile Include="MainWindow.SaveData.cs" />
+    <Compile Include="NotifyPatternWindow.xaml.cs">
+      <DependentUpon>NotifyPatternWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SaveFile.cs" />
     <Compile Include="SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
@@ -94,6 +103,14 @@
     <Compile Include="Watch\SeagullStopWatch.cs" />
     <Compile Include="Watch\SeagullTimer.cs" />
     <Compile Include="Watch\SeagullWatch.cs" />
+    <Page Include="Controls\NotifyPatternControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NotifyPatternDataGridControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -107,6 +124,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Controls\NumberTextbox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NotifyPatternWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

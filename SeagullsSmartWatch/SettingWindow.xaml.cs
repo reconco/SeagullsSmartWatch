@@ -24,6 +24,7 @@ namespace SeagullsSmartWatch
     {
 
         private MainWindow mainWindow = null;
+        private NotifyPatternWindow notifyPatternWindow = null;
 
         public SettingWindow(MainWindow _mainWindow)
         {
@@ -302,6 +303,25 @@ namespace SeagullsSmartWatch
                 Uri referenceUri = new Uri(System.AppDomain.CurrentDomain.BaseDirectory);
                 findSoundButton.Content = referenceUri.MakeRelativeUri(fileUri).ToString();
             }
+        }
+
+        private void setNotificationPattern_Click(object sender, RoutedEventArgs e)
+        {
+            if (notifyPatternWindow == null)
+            {
+                NotifyPatternWindow notifyPatternWindow = new NotifyPatternWindow();
+                notifyPatternWindow.Closed += NotifyPatternWindow_Closed; ;
+                notifyPatternWindow.Show();
+            }
+            else
+            {
+                notifyPatternWindow.Focus();
+            }
+        }
+
+        private void NotifyPatternWindow_Closed(object sender, EventArgs e)
+        {
+            notifyPatternWindow = null;
         }
     }
 }
