@@ -25,6 +25,7 @@ namespace SeagullsSmartWatch
 
         private MainWindow mainWindow = null;
         private NotifyPatternWindow notifyPatternWindow = null;
+        public List<NotifyPatternData> tempNotifyPatterns = new List<NotifyPatternData>();
 
         public SettingWindow(MainWindow _mainWindow)
         {
@@ -72,6 +73,11 @@ namespace SeagullsSmartWatch
             timerHour.Text = setting.timer_hours.ToString();
             timerMin.Text = setting.timer_minutes.ToString();
             timerSec.Text = setting.timer_seconds.ToString();
+
+            useNotificationCheckbox.IsChecked = setting.useNotifyPattern;
+            tempNotifyPatterns.Clear();
+            foreach (NotifyPatternData data in MainWindow.setting.notifyPatterns)
+                tempNotifyPatterns.Add(data.Clone());
         }
 
         private void SaveNewSetting()
@@ -107,6 +113,9 @@ namespace SeagullsSmartWatch
             newSetting.timer_hours = int.Parse(timerHour.Text);
             newSetting.timer_minutes = int.Parse(timerMin.Text);
             newSetting.timer_seconds = int.Parse(timerSec.Text);
+
+            newSetting.useNotifyPattern = (useNotificationPattern.IsChecked == true);
+            newSetting.notifyPatterns = tempNotifyPatterns;
 
             MainWindow.setting = newSetting;
             MainWindow.SaveSettingData();
@@ -150,6 +159,12 @@ namespace SeagullsSmartWatch
             //    resetTimer = true;
             //}
 
+            if(notifyPatternWindow != null)
+            {
+                MessageBox.Show("알림 패턴 설정이 열려 있습니다. 알림 패턴 설정 창을 닫아주세요.");
+                return;
+            }    
+
             SaveNewSetting();
 
             mainWindow.Reset();
@@ -160,6 +175,12 @@ namespace SeagullsSmartWatch
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
+            if (notifyPatternWindow != null)
+            {
+                MessageBox.Show("알림 패턴 설정 창이 열려 있습니다. 알림 패턴 설정 창을 닫아주세요.");
+                return;
+            }
+
             Close();
         }
 
@@ -286,6 +307,15 @@ namespace SeagullsSmartWatch
             }
         }
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (notifyPatternWindow != null)
+            {
+                MessageBox.Show("알림 패턴 설정 창이 열려 있습니다. 알림 패턴 설정 창을 닫아주세요.");
+                e.Cancel = true;
+            }
+        }
+
         private void Window_Closed(object sender, EventArgs e)
         {
             mainWindow.SetBGColor(MainWindow.setting.bgColor.ToString());
@@ -309,7 +339,8 @@ namespace SeagullsSmartWatch
         {
             if (notifyPatternWindow == null)
             {
-                NotifyPatternWindow notifyPatternWindow = new NotifyPatternWindow();
+                notifyPatternWindow = new NotifyPatternWindow(tempNotifyPatterns);
+                notifyPatternWindow.NotifyPatternHasChanged += NotifyPatternWindow_NotifyPatternHasChanged;
                 notifyPatternWindow.Closed += NotifyPatternWindow_Closed; ;
                 notifyPatternWindow.Show();
             }
@@ -317,6 +348,17 @@ namespace SeagullsSmartWatch
             {
                 notifyPatternWindow.Focus();
             }
+        }
+
+        private void NotifyPatternWindow_NotifyPatternHasChanged(object sender, EventArgs e)
+        {
+            NotifyPatternWindow notifyPatternWindow = sender as NotifyPatternWindow;
+            if (notifyPatternWindow == null)
+                return;
+
+            notifyPatternSaveMessage.Visibility = Visibility.Visible;
+
+            tempNotifyPatterns = notifyPatternWindow.CloneNotifyPatternDatas();
         }
 
         private void NotifyPatternWindow_Closed(object sender, EventArgs e)

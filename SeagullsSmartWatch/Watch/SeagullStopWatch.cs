@@ -10,6 +10,9 @@ namespace SeagullsSmartWatch
     {
         TimeSpan nextNotifyTime = new TimeSpan();
 
+        List<int> notifyTimePattern = new List<int>();
+        int curNotifyTimeIndex = 0;
+
         public override TimeSpan CurrentTime
         {
             get
@@ -38,6 +41,25 @@ namespace SeagullsSmartWatch
             }
 
             base.Update();
+        }
+
+        public void SetNotifyPatternData(List<NotifyPatternData> notifyPatternData)
+        {
+            notifyTimePattern.Clear();
+
+            foreach (NotifyPatternData patternData in notifyPatternData)
+            {
+                notifyTimePattern.Add(patternData.Time);
+            }
+
+            curNotifyTimeIndex = 0;
+            CalculateNextNotifyTime();
+        }
+
+        private void CalculateNextNotifyTime()
+        {
+            TimeSpan ts = new TimeSpan(0, 0, notifyTimePattern[curNotifyTimeIndex]);
+            nextNotifyTime = nextNotifyTime.Add(ts);
         }
     }
 }

@@ -15,15 +15,6 @@ using System.Windows.Shapes;
 
 namespace SeagullsSmartWatch
 {
-    public class NotifyPatternData
-    {
-        public int Time { get; set; } = 0;
-        public string Message { get; set; } = "dsfdfdf";
-        public string MessageColor { get; set; } = "#FFFFFFFF";
-        public string SoundFile { get; set; } = "";
-    }
-
-
     /// <summary>
     /// NotifyPatternDataGridControl.xaml에 대한 상호 작용 논리
     /// </summary>
@@ -40,14 +31,23 @@ namespace SeagullsSmartWatch
         {
             InitializeComponent();
 
-            patternDataGrid.ItemsSource = notifyPatternDatas;
+            //patternDataGrid.ItemsSource = notifyPatternDatas;
+        }
 
-            notifyPatternDatas.Add(new NotifyPatternData());
-            notifyPatternDatas.Add(new NotifyPatternData());
+        public void SetPatternDatas(List<NotifyPatternData> _notifyPatternDatas)
+        {
+            this.notifyPatternDatas.Clear();
+            foreach (NotifyPatternData data in _notifyPatternDatas)
+                this.notifyPatternDatas.Add(data.Clone());
+
+            patternDataGrid.ItemsSource = notifyPatternDatas;
         }
 
         public void AddPatternData(NotifyPatternData patternData)
         {
+            if (notifyPatternDatas.Count >= 16)
+                return;
+
             NotifyPatternDatas.Add(patternData);
             patternDataGrid.Items.Refresh();
         }
@@ -64,9 +64,9 @@ namespace SeagullsSmartWatch
             NotifyPatternDatas.RemoveAt(from);
 
             if (to < 0)
-                return;
-            //else if (to >= NotifyPatternDatas.Count)
-            //    to = NotifyPatternDatas.Count - 1;
+                to = 0;
+            else if (to >= NotifyPatternDatas.Count)
+                to = NotifyPatternDatas.Count;
 
             NotifyPatternDatas.Insert(to, target);
 

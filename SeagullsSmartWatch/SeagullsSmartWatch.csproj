@@ -91,6 +91,7 @@
     </Compile>
     <Compile Include="MainWindow.Notification.cs" />
     <Compile Include="MainWindow.SaveData.cs" />
+    <Compile Include="NotifyPatternData.cs" />
     <Compile Include="NotifyPatternWindow.xaml.cs">
       <DependentUpon>NotifyPatternWindow.xaml</DependentUpon>
     </Compile>

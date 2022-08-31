@@ -11,8 +11,6 @@ namespace SeagullsSmartWatch
 
     public partial class MainWindow
     {
-
-
         Stopwatch leftNotifyingStopWatch = new Stopwatch();
 
         private void StartCommonNotification()

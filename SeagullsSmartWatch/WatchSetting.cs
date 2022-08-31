@@ -32,6 +32,9 @@ namespace SeagullsSmartWatch
         public int timer_hours = 0;
         public int timer_minutes = 0;
         public int timer_seconds = 0;
+
+        public bool useNotifyPattern = false;
+        public List<NotifyPatternData> notifyPatterns = new List<NotifyPatternData>();
     }
 
 

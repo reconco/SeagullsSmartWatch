@@ -9,7 +9,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
-            <RowDefinition Height="45"></RowDefinition>
+            <RowDefinition Height="95"></RowDefinition>
         </Grid.RowDefinitions>
 
         <local:NotifyPatternDataGridControl x:Name="patternDataGridControl" Grid.Row="0" BorderBrush="LightGray" BorderThickness="1" HorizontalAlignment="Center"/>
@@ -17,12 +17,16 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Row="1">
                 <Button Name="addButton" Content="추가" MaxHeight="20" Margin="7,0,7,0" Click="addButton_Click"/>
                 <Button Name="removeButton" Content="삭제" MaxHeight="20" Margin="7,0,7,0" Click="removeButton_Click"/>
-                <Button Name="helpButton" Content="도움말" MaxHeight="20" Margin="7,0,7,0" Click="helpButton_Click"/>
+                <!--<Button Name="helpButton" Content="도움말" MaxHeight="20" Margin="7,0,7,0" Click="helpButton_Click"/>-->
+                <Button Name="upButton" Content=" ▲ " MaxHeight="20" Margin="7,0,7,0" Click="upButton_Click"/>
+                <Button Name="downButton" Content=" ▼ " MaxHeight="20" Margin="7,0,7,0" Click="downButton_Click"/>
+                <TextBlock Name="countText" Text="1/16" HorizontalAlignment="Right" Margin="0,5,0,5"/>
             </StackPanel>
+            <TextBlock Text="* 현재 창에서 '확인'을 누르고 설정 창에서도 '확인'을 눌러야 &#10; 변경사항이 저장됩니다." HorizontalAlignment="Center" Margin="0,5,0,5"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1">
-                <Button Name="okButton" Content="확인" FontSize="15"/>
+                <Button Name="okButton" Content="확인" FontSize="15" Click="okButton_Click"/>
                 <Grid Width="20"/>
-                <Button Name="cancleButton" Content="취소" FontSize="15"/>
+                <Button Name="cancleButton" Content="취소" FontSize="15" Click="cancleButton_Click"/>
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -36,6 +36,20 @@ namespace SeagullsSmartWatch
                 setting.timer_minutes = (int)saveFile.GetData("Timer_M", 0);
                 setting.timer_seconds = (int)saveFile.GetData("Timer_S", 0);
 
+                setting.useNotifyPattern = (bool)saveFile.GetData("UseNotifyPattern", false);
+
+                setting.notifyPatterns.Clear();
+                int notifyPatternCount = (int)saveFile.GetData("NotifyPatternCount", 0);
+                for(int i = 0; i < notifyPatternCount; i++)
+                {
+                    NotifyPatternData notifyPatternData = new NotifyPatternData();
+                    string dataName = "NotifyPattern" + i.ToString();
+
+                    notifyPatternData.Time = (int)saveFile.GetData(dataName + "_Time", 0);
+                    notifyPatternData.Message = (string)saveFile.GetData(dataName + "_Message", "");
+
+                    setting.notifyPatterns.Add(notifyPatternData);
+                }
             }
             else
                 SaveSettingData();
@@ -72,6 +86,17 @@ namespace SeagullsSmartWatch
             saveFile.SetData("Timer_H", setting.timer_hours);
             saveFile.SetData("Timer_M", setting.timer_minutes);
             saveFile.SetData("Timer_S", setting.timer_seconds);
+
+            saveFile.SetData("UseNotifyPattern", setting.useNotifyPattern);
+
+            int notifyPatternCount = setting.notifyPatterns.Count;
+            saveFile.SetData("NotifyPatternCount", setting.notifyPatterns.Count);
+            for(int i =0; i < notifyPatternCount; i++)
+            {
+                string dataName = "NotifyPattern" + i.ToString();
+                saveFile.SetData(dataName + "_Time", setting.notifyPatterns[i].Time);
+                saveFile.SetData(dataName + "_Message", setting.notifyPatterns[i].Message);
+            }
 
             saveFile.SaveThisFile();
         }
