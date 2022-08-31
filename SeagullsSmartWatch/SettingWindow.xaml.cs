@@ -26,6 +26,7 @@ namespace SeagullsSmartWatch
         private MainWindow mainWindow = null;
         private NotifyPatternWindow notifyPatternWindow = null;
         public List<NotifyPatternData> tempNotifyPatterns = new List<NotifyPatternData>();
+        private bool needReset = false;
 
         public SettingWindow(MainWindow _mainWindow)
         {
@@ -168,15 +169,10 @@ namespace SeagullsSmartWatch
                 return;
             }
 
-            //저장하기 직전의 값과 비교를 해야함. reset하기 전에 저장해야함.
-            //그래서 SaveNewSetting()함수를 더럽게 썼음
-            if ((timerRadioButton.IsChecked == true) || !WatchTypeIsSame())
-            {
-                SaveNewSetting();
+            SaveNewSetting();
+
+            if (needReset)
                 mainWindow.Reset();
-            }
-            else
-                SaveNewSetting();
 
             mainWindow.soundPlayer.LoadSoundFile(findSoundButton.Content as string);
             mainWindow.ChangeWatchTypeText();
@@ -386,17 +382,23 @@ namespace SeagullsSmartWatch
             if ((timerRadioButton.IsChecked == true))
             {
                 guideText.Text = "* 확인을 누르면 진행 시간이 초기화 됩니다." + Environment.NewLine + "(사유 : 시계 타입 타이머)";
+                needReset = true;
             }
             else if (!WatchTypeIsSame())
             {
                 guideText.Text = "* 확인을 누르면 진행 시간이 초기화 됩니다." + Environment.NewLine + "(사유 : 시계 타입 변경)";
+                needReset = true;
             }
             else if (!NotifyTimeIsSame())
             {
                 guideText.Text = "* 확인을 누르면 다음 알림 이후부터 변경된 알림설정이 적용됩니다." + Environment.NewLine + "(사유 : 스톱워치 알림 설정 변경)";
+                needReset = false;
             }
             else
-                guideText.Text = "";
+            {
+                guideText.Text = ""; 
+                needReset = false;
+            }
         }
 
         private void Window_LayoutUpdated(object sender, EventArgs e)
