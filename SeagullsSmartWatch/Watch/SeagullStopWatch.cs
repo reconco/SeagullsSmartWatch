@@ -10,7 +10,6 @@ namespace SeagullsSmartWatch
     {
         TimeSpan nextNotifyTime = new TimeSpan();
 
-        List<int> notifyTimePattern = new List<int>();
         int curNotifyTimeIndex = 0;
 
         public override TimeSpan CurrentTime
@@ -23,12 +22,12 @@ namespace SeagullsSmartWatch
 
         public SeagullStopWatch(MainWindow _mainWindow) : base(_mainWindow)
         {
-            nextNotifyTime += new TimeSpan(MainWindow.setting.useNotify_hours, MainWindow.setting.useNotify_minutes, MainWindow.setting.useNotify_seconds);
+            CalculateNextNotifyTime();
         }
 
         public override void Update()
         {
-            if (!MainWindow.setting.useNotify)
+            if (!MainWindow.setting.useNotify && !MainWindow.setting.useNotifyPattern)
                 return;
 
             if (!IsRunning)
@@ -37,29 +36,32 @@ namespace SeagullsSmartWatch
             if ((nextNotifyTime - CurrentTime).TotalSeconds <= 0)
             {
                 mainWindow.StartNotification();
-                nextNotifyTime += new TimeSpan(MainWindow.setting.useNotify_hours, MainWindow.setting.useNotify_minutes, MainWindow.setting.useNotify_seconds);
+                CalculateNextNotifyTime();
             }
 
             base.Update();
         }
 
-        public void SetNotifyPatternData(List<NotifyPatternData> notifyPatternData)
+        public void SetToFirstNotifyPatternIndex()
         {
-            notifyTimePattern.Clear();
-
-            foreach (NotifyPatternData patternData in notifyPatternData)
-            {
-                notifyTimePattern.Add(patternData.Time);
-            }
-
             curNotifyTimeIndex = 0;
-            CalculateNextNotifyTime();
         }
 
         private void CalculateNextNotifyTime()
         {
-            TimeSpan ts = new TimeSpan(0, 0, notifyTimePattern[curNotifyTimeIndex]);
-            nextNotifyTime = nextNotifyTime.Add(ts);
+            if (MainWindow.setting.useNotify)
+            {
+                nextNotifyTime += new TimeSpan(MainWindow.setting.useNotify_hours, MainWindow.setting.useNotify_minutes, MainWindow.setting.useNotify_seconds);
+            }
+            else if (MainWindow.setting.useNotifyPattern)
+            {
+                TimeSpan ts = new TimeSpan(0, 0, MainWindow.setting.notifyPatterns[curNotifyTimeIndex].Time);
+                nextNotifyTime = nextNotifyTime.Add(ts);
+
+                curNotifyTimeIndex++;
+                if (curNotifyTimeIndex >= MainWindow.setting.notifyPatterns.Count)
+                    curNotifyTimeIndex = 0;
+            }
         }
     }
 }

@@ -74,7 +74,7 @@ namespace SeagullsSmartWatch
             timerMin.Text = setting.timer_minutes.ToString();
             timerSec.Text = setting.timer_seconds.ToString();
 
-            useNotificationCheckbox.IsChecked = setting.useNotifyPattern;
+            useNotificationPatternCheckbox.IsChecked = setting.useNotifyPattern;
             tempNotifyPatterns.Clear();
             foreach (NotifyPatternData data in MainWindow.setting.notifyPatterns)
                 tempNotifyPatterns.Add(data.Clone());
@@ -114,7 +114,7 @@ namespace SeagullsSmartWatch
             newSetting.timer_minutes = int.Parse(timerMin.Text);
             newSetting.timer_seconds = int.Parse(timerSec.Text);
 
-            newSetting.useNotifyPattern = (useNotificationPattern.IsChecked == true);
+            newSetting.useNotifyPattern = (useNotificationPatternCheckbox.IsChecked == true);
             newSetting.notifyPatterns = tempNotifyPatterns;
 
             MainWindow.setting = newSetting;
@@ -124,50 +124,60 @@ namespace SeagullsSmartWatch
         private bool NotifyTimeIsSame()
         {
             WatchSetting curSetting = MainWindow.setting;
-            if (curSetting.useNotify_hours != int.Parse(notiHour.Text))
+
+            if((useNotificationCheckbox.IsChecked == true) && !curSetting.useNotify)
                 return false;
-            else if (curSetting.useNotify_minutes != int.Parse(notiMin.Text))
+            else if ((useNotificationPatternCheckbox.IsChecked == true) && !curSetting.useNotifyPattern)
                 return false;
-            else if (curSetting.useNotify_seconds != int.Parse(notiSec.Text))
-                return false;
+
+            else if (useNotificationCheckbox.IsChecked == true)
+            {
+                if (curSetting.useNotify_hours != int.Parse(notiHour.Text))
+                    return false;
+                else if (curSetting.useNotify_minutes != int.Parse(notiMin.Text))
+                    return false;
+                else if (curSetting.useNotify_seconds != int.Parse(notiSec.Text))
+                    return false;
+            }
+            else if(useNotificationPatternCheckbox.IsChecked == true)
+            {
+                if (notifyPatternSaveMessage.Visibility == Visibility.Visible)
+                    return false;
+            }
 
             return true;
         }
 
+        private bool WatchTypeIsSame()
+        {
+            if ((stopwatchRadioButton.IsChecked == true) && 
+                (MainWindow.setting.watchType == WatchType.Stopwatch))
+                return true;
+            else if ((timerRadioButton.IsChecked == true) &&
+                (MainWindow.setting.watchType == WatchType.Timer))
+                return true;
+
+            return false;
+        }
+
         private void okButton_Click(object sender, RoutedEventArgs e)
         {
-            //bool resetTimer = false;
-
-            //if (stopwatchRadioButton.IsChecked == true)
-            //{
-            //    if (!mainWindow.WatchHadStart)
-            //        resetTimer = true;
-            //    else if (!NotifyTimeIsSame())
-            //    {
-            //        MessageBoxResult result = MessageBox.Show(mainWindow.NextNotifyTime.ToString() +
-            //            "에 진행될 예정인 알림까지 진행한 이후부터 변경한 알림 시간이 적용될 예정입니다.\n변경하시겠습니까?", "알림", MessageBoxButton.OKCancel);
-            //        if (result == MessageBoxResult.Cancel)
-            //            return;
-            //    }
-            //}
-            //else
-            //{
-            //    MessageBoxResult result = MessageBox.Show("진행중인 타이머를 초기화해야합니다.\n변경하시겠습니까?", "경고", MessageBoxButton.OKCancel);
-            //    if (result == MessageBoxResult.Cancel)
-            //        return;
-
-            //    resetTimer = true;
-            //}
-
             if(notifyPatternWindow != null)
             {
                 MessageBox.Show("알림 패턴 설정이 열려 있습니다. 알림 패턴 설정 창을 닫아주세요.");
                 return;
-            }    
+            }
 
-            SaveNewSetting();
+            //저장하기 직전의 값과 비교를 해야함. reset하기 전에 저장해야함.
+            //그래서 SaveNewSetting()함수를 더럽게 썼음
+            if ((timerRadioButton.IsChecked == true) || !WatchTypeIsSame())
+            {
+                SaveNewSetting();
+                mainWindow.Reset();
+            }
+            else
+                SaveNewSetting();
 
-            mainWindow.Reset();
             mainWindow.soundPlayer.LoadSoundFile(findSoundButton.Content as string);
             mainWindow.ChangeWatchTypeText();
             Close();
@@ -183,7 +193,6 @@ namespace SeagullsSmartWatch
 
             Close();
         }
-
         private void useNotificationCheckbox_Checked(object sender, RoutedEventArgs e)
         {
             noti1MinButton.IsEnabled = true;
@@ -195,6 +204,8 @@ namespace SeagullsSmartWatch
             notiHour.IsEnabled = true;
             notiMin.IsEnabled = true;
             notiSec.IsEnabled = true;
+
+            useNotificationPatternCheckbox.IsChecked = false;
         }
 
         private void useNotificationCheckbox_Unchecked(object sender, RoutedEventArgs e)
@@ -208,6 +219,10 @@ namespace SeagullsSmartWatch
             notiHour.IsEnabled = false;
             notiMin.IsEnabled = false;
             notiSec.IsEnabled = false;
+        }
+        private void useNotificationPattern_Checked(object sender, RoutedEventArgs e)
+        {
+            useNotificationCheckbox.IsChecked = false;
         }
 
         private void SetNotifyTime(int hour, int minutes, int seconds)
@@ -364,6 +379,29 @@ namespace SeagullsSmartWatch
         private void NotifyPatternWindow_Closed(object sender, EventArgs e)
         {
             notifyPatternWindow = null;
+        }
+
+        private void UpdateGuideText()
+        {
+            if ((timerRadioButton.IsChecked == true))
+            {
+                guideText.Text = "* 확인을 누르면 진행 시간이 초기화 됩니다." + Environment.NewLine + "(사유 : 시계 타입 타이머)";
+            }
+            else if (!WatchTypeIsSame())
+            {
+                guideText.Text = "* 확인을 누르면 진행 시간이 초기화 됩니다." + Environment.NewLine + "(사유 : 시계 타입 변경)";
+            }
+            else if (!NotifyTimeIsSame())
+            {
+                guideText.Text = "* 확인을 누르면 다음 알림 이후부터 변경된 알림설정이 적용됩니다." + Environment.NewLine + "(사유 : 스톱워치 알림 설정 변경)";
+            }
+            else
+                guideText.Text = "";
+        }
+
+        private void Window_LayoutUpdated(object sender, EventArgs e)
+        {
+            UpdateGuideText();
         }
     }
 }
