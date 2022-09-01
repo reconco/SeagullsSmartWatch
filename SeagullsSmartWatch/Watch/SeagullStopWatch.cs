@@ -10,12 +10,14 @@ namespace SeagullsSmartWatch
     {
         TimeSpan nextNotifyTime = new TimeSpan();
 
+        NotifyPatternData nextNotifyPatternData = null;
         int curNotifyTimeIndex = 0;
 
         public override TimeSpan CurrentTime
         {
             get
             {
+
                 return stopWatch.Elapsed;
             }
         }
@@ -35,7 +37,13 @@ namespace SeagullsSmartWatch
 
             if ((nextNotifyTime - CurrentTime).TotalSeconds <= 0)
             {
-                mainWindow.StartNotification();
+                if(nextNotifyPatternData == null)
+                    mainWindow.StartNotification();
+                else
+                {
+                    mainWindow.StartNotification(/*nextNotifyPatternData.SoundFile,*/ nextNotifyPatternData.NotifyTextColor, nextNotifyPatternData.Message);
+                    nextNotifyPatternData = null;
+                }
                 CalculateNextNotifyTime();
             }
 
@@ -55,6 +63,7 @@ namespace SeagullsSmartWatch
             }
             else if (MainWindow.setting.useNotifyPattern)
             {
+                nextNotifyPatternData = MainWindow.setting.notifyPatterns[curNotifyTimeIndex];
                 TimeSpan ts = new TimeSpan(0, 0, MainWindow.setting.notifyPatterns[curNotifyTimeIndex].Time);
                 nextNotifyTime = nextNotifyTime.Add(ts);
 

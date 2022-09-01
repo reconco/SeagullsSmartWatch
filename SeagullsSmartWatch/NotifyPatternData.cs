@@ -11,7 +11,7 @@ namespace SeagullsSmartWatch
         public const int MAX_COUNT = 16;
         public int Time { get; set; } = 0;
         public string Message { get; set; } = "";
-        public string MessageColor { get; set; } = "#FFFFFFFF";
+        public string NotifyTextColor { get; set; } = "#FF000000";
         public string SoundFile { get; set; } = "";
 
         public NotifyPatternData Clone()
@@ -19,7 +19,7 @@ namespace SeagullsSmartWatch
             NotifyPatternData cloned = new NotifyPatternData();
             cloned.Time = this.Time;
             cloned.Message = this.Message;
-            cloned.MessageColor = this.MessageColor;
+            cloned.NotifyTextColor = this.NotifyTextColor;
             cloned.SoundFile = this.SoundFile;
 
             return cloned;

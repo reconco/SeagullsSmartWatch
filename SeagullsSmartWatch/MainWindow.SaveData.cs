@@ -47,6 +47,7 @@ namespace SeagullsSmartWatch
 
                     notifyPatternData.Time = (int)saveFile.GetData(dataName + "_Time", 0);
                     notifyPatternData.Message = (string)saveFile.GetData(dataName + "_Message", "");
+                    notifyPatternData.NotifyTextColor = (string)saveFile.GetData(dataName + "_NotifyTextColor", "");
 
                     setting.notifyPatterns.Add(notifyPatternData);
                 }
@@ -96,6 +97,7 @@ namespace SeagullsSmartWatch
                 string dataName = "NotifyPattern" + i.ToString();
                 saveFile.SetData(dataName + "_Time", setting.notifyPatterns[i].Time);
                 saveFile.SetData(dataName + "_Message", setting.notifyPatterns[i].Message);
+                saveFile.SetData(dataName + "_NotifyTextColor", setting.notifyPatterns[i].NotifyTextColor);
             }
 
             saveFile.SaveThisFile();

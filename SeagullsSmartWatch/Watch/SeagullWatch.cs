@@ -28,6 +28,11 @@ namespace SeagullsSmartWatch
             }
         }
 
+        public bool IsNotRun()
+        {
+            return (stopWatch.Elapsed.TotalSeconds < 1);
+        }
+
 
         public virtual void Update()
         {

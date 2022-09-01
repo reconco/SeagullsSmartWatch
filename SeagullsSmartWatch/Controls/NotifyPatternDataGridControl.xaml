@@ -10,26 +10,26 @@
         <DataGrid Name="patternDataGrid" AutoGenerateColumns="False" SelectionMode="Single" CanUserAddRows="False" CanUserResizeRows="False" CanUserResizeColumns="False"
                   CanUserDeleteRows="False" CanUserSortColumns="False" CanUserReorderColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="시간(초)" Binding="{Binding Time}" Width="60"/>
-                <DataGridTextColumn Header="메시지" Width="160" Binding="{Binding Message}"/>
+                <DataGridTextColumn Header="시간(초)" Binding="{Binding Time}" Width="55"/>
+                <DataGridTextColumn Header="메시지" Width="*" Binding="{Binding Message}"/>
                 
-                <DataGridTemplateColumn  Header="메시지 색상" Width="75">
+                <DataGridTemplateColumn  Header="텍스트 색상" Width="75">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button x:Name="textColorButton" Margin="5,2,0,0" >
-                                <Grid x:Name="textColor" Background="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Height="14"/>
+                            <Button x:Name="textColorButton" HorizontalAlignment="Center" Click="textColorButton_Click" >
+                                <Grid x:Name="textColor" Background="Black" HorizontalAlignment="Center" Width="70" Height="14" Loaded="textColor_Loaded"/>
                             </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 
-                <DataGridTemplateColumn Header="사운드" Width="*">
+                <!--<DataGridTemplateColumn Header="사운드" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Test"/>
+                            <Button x:Name="soundButton" Content="Test"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                </DataGridTemplateColumn>-->
                 
             </DataGrid.Columns>
         </DataGrid>

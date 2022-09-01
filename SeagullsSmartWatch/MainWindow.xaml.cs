@@ -39,6 +39,10 @@ namespace SeagullsSmartWatch
 
         SettingWindow settingWindow = null;
 
+        public bool CurrentWatchIsNotRun
+        {
+            get { return currentWatch.IsNotRun(); }
+        }
 
         public MainWindow()
         {
@@ -63,12 +67,17 @@ namespace SeagullsSmartWatch
             currentWatch.Update();
             UpdateNotification(currentTime);
 
-            if (currentTime.Days > 0)
-                day.Visibility = Visibility.Visible;
-            else
-                day.Visibility = Visibility.Hidden;
+            //메시지 출력중이 아니라면
+            if (!usingDayTextToMessage)
+            {
+                if (currentTime.Days > 0)
+                    day.Visibility = Visibility.Visible;
+                else
+                    day.Visibility = Visibility.Hidden;
 
-            day.Text = currentTime.Days.ToString() + " 일";
+                day.Text = currentTime.Days.ToString() + " 일";
+            }
+
             time.Text = currentTime.Hours.ToString("D2") + ":" + currentTime.Minutes.ToString("D2") + ":" + currentTime.Seconds.ToString("D2");
 
 
@@ -109,7 +118,9 @@ namespace SeagullsSmartWatch
                 currentWatch.Stop();
 
                 leftNotifyingStopWatch.Reset();
+                usingDayTextToMessage = false;
                 SetTextColor(setting.textColor);
+                UpdateTick(this, null);
             }
         }
 
@@ -124,7 +135,8 @@ namespace SeagullsSmartWatch
 
         private void CreateNewWatch()
         {
-            previousWatch = currentWatch;
+            if(currentWatch != null && !currentWatch.IsNotRun())
+                previousWatch = currentWatch;
 
             if (setting.watchType == WatchType.Timer)
             {
@@ -146,6 +158,7 @@ namespace SeagullsSmartWatch
 
             CreateNewWatch();
             //currentWatch.Reset();
+            usingDayTextToMessage = false;
             UpdateTick(this, null);
             updateTimer.Stop();
 
@@ -153,6 +166,15 @@ namespace SeagullsSmartWatch
             SetTextColor(setting.textColor);
 
             soundPlayer.Stop();
+        }
+        public void AdjustNotifyChanged()
+        {
+            usingDayTextToMessage = false;
+
+            if(currentWatch is SeagullStopWatch)
+            {
+                ((SeagullStopWatch)currentWatch).SetToFirstNotifyPatternIndex();
+            }
         }
 
         public void ReturnToPreviosWatch()

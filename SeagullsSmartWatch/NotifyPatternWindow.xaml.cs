@@ -40,7 +40,10 @@ namespace SeagullsSmartWatch
             if (patternDataGridControl.NotifyPatternDatas.Count >= 16)
                 return;
 
-            patternDataGridControl.AddPatternData(new NotifyPatternData());
+            NotifyPatternData newNotifyPatternData = new NotifyPatternData();
+            newNotifyPatternData.NotifyTextColor = MainWindow.setting.notifyTextColor;
+
+            patternDataGridControl.AddPatternData(newNotifyPatternData);
             UpdateCountText();
         }
 

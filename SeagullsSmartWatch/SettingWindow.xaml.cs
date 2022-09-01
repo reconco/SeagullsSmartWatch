@@ -17,16 +17,20 @@ using Microsoft.Win32;
 
 namespace SeagullsSmartWatch
 {
+    enum AdjustMethod
+    {
+        None, Reset, AdjustNotifyChanges
+    }
+
     /// <summary>
     /// SettingWindow.xaml에 대한 상호 작용 논리
     /// </summary>
     public partial class SettingWindow : Window
     {
-
         private MainWindow mainWindow = null;
         private NotifyPatternWindow notifyPatternWindow = null;
         public List<NotifyPatternData> tempNotifyPatterns = new List<NotifyPatternData>();
-        private bool needReset = false;
+        private AdjustMethod adjustMethod = AdjustMethod.None;
 
         public SettingWindow(MainWindow _mainWindow)
         {
@@ -170,9 +174,13 @@ namespace SeagullsSmartWatch
             }
 
             SaveNewSetting();
-
-            if (needReset)
+            
+            if(mainWindow.CurrentWatchIsNotRun)
                 mainWindow.Reset();
+            else if (adjustMethod == AdjustMethod.Reset)
+                mainWindow.Reset();
+            else if (adjustMethod == AdjustMethod.AdjustNotifyChanges)
+                mainWindow.AdjustNotifyChanged();
 
             mainWindow.soundPlayer.LoadSoundFile(findSoundButton.Content as string);
             mainWindow.ChangeWatchTypeText();
@@ -382,22 +390,22 @@ namespace SeagullsSmartWatch
             if ((timerRadioButton.IsChecked == true))
             {
                 guideText.Text = "* 확인을 누르면 진행 시간이 초기화 됩니다." + Environment.NewLine + "(사유 : 시계 타입 타이머)";
-                needReset = true;
+                adjustMethod = AdjustMethod.Reset;
             }
             else if (!WatchTypeIsSame())
             {
                 guideText.Text = "* 확인을 누르면 진행 시간이 초기화 됩니다." + Environment.NewLine + "(사유 : 시계 타입 변경)";
-                needReset = true;
+                adjustMethod = AdjustMethod.Reset;
             }
-            else if (!NotifyTimeIsSame())
+            else if (!mainWindow.CurrentWatchIsNotRun && !NotifyTimeIsSame())
             {
                 guideText.Text = "* 확인을 누르면 다음 알림 이후부터 변경된 알림설정이 적용됩니다." + Environment.NewLine + "(사유 : 스톱워치 알림 설정 변경)";
-                needReset = false;
+                adjustMethod = AdjustMethod.AdjustNotifyChanges;
             }
             else
             {
-                guideText.Text = ""; 
-                needReset = false;
+                guideText.Text = "";
+                adjustMethod = AdjustMethod.None;
             }
         }
 

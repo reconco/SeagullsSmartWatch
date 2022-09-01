@@ -12,10 +12,12 @@ namespace SeagullsSmartWatch
     public partial class MainWindow
     {
         Stopwatch leftNotifyingStopWatch = new Stopwatch();
+        public bool usingDayTextToMessage = false;
 
         private void StartCommonNotification()
         {
             SetTextColor(MainWindow.setting.notifyTextColor);
+            leftNotifyingStopWatch.Reset();
             leftNotifyingStopWatch.Start();
         }
 
@@ -27,16 +29,38 @@ namespace SeagullsSmartWatch
                 soundPlayer.Play();
         }
 
-        public void StartNotification(string soundFile)
+        //public void StartNotification(string soundFile)
+        //{
+        //    StartCommonNotification();
+
+        //    if (MainWindow.setting.useNotifySound)
+        //    {
+        //        //미구현
+        //        //soundPlayer.LoadSoundFile(soundFile);
+        //        soundPlayer.Play();
+        //    }
+        //}
+        public void StartNotification(/*string soundFile,*/ string notifyTextColor, string message)
         {
-            StartCommonNotification();
+            SetTextColor(notifyTextColor);
+            leftNotifyingStopWatch.Reset();
+            leftNotifyingStopWatch.Start();
 
             if (MainWindow.setting.useNotifySound)
             {
-                soundPlayer.LoadSoundFile(soundFile);
+                //미구현
+                //soundPlayer.LoadSoundFile(soundFile);
                 soundPlayer.Play();
             }
+
+            if (message != "")
+            {
+                day.Text = message;
+                day.Visibility = Visibility.Visible;
+                usingDayTextToMessage = true;
+            }
         }
+
 
         private void UpdateNotification(TimeSpan currentTime)
         {
@@ -44,6 +68,7 @@ namespace SeagullsSmartWatch
             {
                 SetTextColor(setting.textColor);
                 leftNotifyingStopWatch.Reset();
+                usingDayTextToMessage = false;
             }
         }
     }
