@@ -174,6 +174,7 @@ namespace SeagullsSmartWatch
             if(currentWatch is SeagullStopWatch)
             {
                 ((SeagullStopWatch)currentWatch).SetToFirstNotifyPatternIndex();
+                ((SeagullStopWatch)currentWatch).CalculateNextNotifyTime();
             }
         }
 

@@ -55,17 +55,29 @@ namespace SeagullsSmartWatch
             curNotifyTimeIndex = 0;
         }
 
-        private void CalculateNextNotifyTime()
+        public void CalculateNextNotifyTime()
         {
+            //알림을 껏다가 다시 켰을때 무조건 재계산되는거 방지(현재시간보다 느릴때만)
+            if ((nextNotifyTime - CurrentTime).TotalSeconds > 0)
+                return;
+
             if (MainWindow.setting.useNotify)
             {
                 nextNotifyTime += new TimeSpan(MainWindow.setting.useNotify_hours, MainWindow.setting.useNotify_minutes, MainWindow.setting.useNotify_seconds);
+
+                //옵션변경으로 현재시간보다 한참 느릴떄
+                while (nextNotifyTime < CurrentTime)
+                    nextNotifyTime += new TimeSpan(MainWindow.setting.useNotify_hours, MainWindow.setting.useNotify_minutes, MainWindow.setting.useNotify_seconds);
             }
             else if (MainWindow.setting.useNotifyPattern)
             {
                 nextNotifyPatternData = MainWindow.setting.notifyPatterns[curNotifyTimeIndex];
                 TimeSpan ts = new TimeSpan(0, 0, MainWindow.setting.notifyPatterns[curNotifyTimeIndex].Time);
-                nextNotifyTime = nextNotifyTime.Add(ts);
+                nextNotifyTime += ts;
+
+                //옵션변경으로 현재시간보다 한참 느릴떄
+                while (nextNotifyTime < CurrentTime)
+                    nextNotifyTime += ts;
 
                 curNotifyTimeIndex++;
                 if (curNotifyTimeIndex >= MainWindow.setting.notifyPatterns.Count)
