@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SeagullsSmartWatch"
         mc:Ignorable="d"
-        Title="갈매기의 스마트워치 알림 패턴" Height="450" Width="430">
+        Title="갈매기 워치 알림 패턴" Height="450" Width="430">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>

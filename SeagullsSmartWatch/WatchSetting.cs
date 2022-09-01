@@ -22,7 +22,7 @@ namespace SeagullsSmartWatch
         public bool useNotifySound = false;
         public string notiSoundFile = "Sounds\\BeepBeepBeep.wav";
         public string notifyTextColor = "#FFFF0000";
-        public int notifyTextTime = 0;
+        public int notifyTextTime = 3;
 
         public bool useNotify = false;
         public int useNotify_hours = 0;

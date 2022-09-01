@@ -25,7 +25,7 @@ namespace SeagullsSmartWatch
                 setting.notiSoundFile = (string)saveFile.GetData("notifySoundFile", "Sounds\\BeepBeepBeep.wav");
 
                 setting.notifyTextColor = (string)saveFile.GetData("notifyTextColor", "#FFFF0000");
-                setting.notifyTextTime = (int)saveFile.GetData("NotifyTextTime", 0);
+                setting.notifyTextTime = (int)saveFile.GetData("NotifyTextTime", 3);
 
                 setting.useNotify = (bool)saveFile.GetData("UseNotify", false);
                 setting.useNotify_hours = (int)saveFile.GetData("UseNotify_H", 0);
