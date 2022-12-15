@@ -413,5 +413,13 @@ namespace SeagullsSmartWatch
         {
             UpdateGuideText();
         }
+
+        public void ForceClose()
+        {
+            if(notifyPatternWindow != null)
+                notifyPatternWindow.Close();
+    
+            Close();
+        }
     }
 }

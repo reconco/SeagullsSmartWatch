@@ -262,5 +262,21 @@ namespace SeagullsSmartWatch
             }
 
         }
+
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (settingWindow != null)
+            {
+                MessageBoxResult result = MessageBox.Show("열려있는 창이 있습니다. 갈매기 워치를 종료하시겠습니까?", "갈매기 워치 종료", MessageBoxButton.YesNo);
+                
+                if(result == MessageBoxResult.No)
+                    e.Cancel = true;
+                else
+                {
+                    settingWindow.ForceClose();
+                }
+            }
+        }
     }
 }
