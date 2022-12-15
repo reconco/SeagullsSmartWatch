@@ -4,6 +4,26 @@
              xmlns:local="clr-namespace:SeagullsSmartWatch"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
+        <!--<ControlTemplate TargetType="Button" x:Key="RoundedTemplate">
+            <Border Background="#DDDDDD" BorderBrush="DimGray" BorderThickness="2" CornerRadius="5" >
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+        </ControlTemplate>
+        
+        <Style TargetType="Button" x:Key="SeagullButton" >
+            <Setter Property="Template" Value="{StaticResource RoundedTemplate}"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#EEEEEE"/>
+                    <Setter Property="BorderBrush" Value="LightGray"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="LightGoldenrodYellow"/>
+                    <Setter Property="BorderBrush" Value="LightGray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>-->
+        
     </Application.Resources>
 </Application>

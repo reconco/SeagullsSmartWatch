@@ -15,6 +15,7 @@
             </StackPanel>
 
             <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="0,10,0,0">
+                <Line X1="0" X2="1" Stroke="LightGray" Stretch="Uniform" StrokeThickness="1" Margin="-5,-5,5,5"/>
                 <TextBlock x:Name="commonText" FontWeight="Bold" Text="일반"/>
                 <CheckBox x:Name="hideWatchTypeText" Content="시계 타입 텍스트 숨기기" Margin="5,2,0,0"/>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,0,0">
@@ -45,6 +46,7 @@
             </StackPanel>
 
             <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="0,10,0,0">
+                <Line X1="0" X2="1" Stroke="LightGray" Stretch="Uniform" StrokeThickness="1" Margin="-5,-5,5,5"/>
                 <TextBlock x:Name="stopwatchText" FontWeight="Bold" Text="스톱워치"/>
                 <CheckBox x:Name="useNotificationCheckbox" Content="반복 알림 사용" Margin="5,2,0,0" Checked="useNotificationCheckbox_Checked" Unchecked="useNotificationCheckbox_Unchecked" />
                 <StackPanel Orientation="Horizontal" Margin="25,2,0,0">
@@ -68,8 +70,10 @@
                     <TextBlock x:Name="notifyPatternSaveMessage" Text="(아직 저장되지 않음)" Foreground="Red" Margin="5,0,0,0" Visibility="Hidden"/>
                 </StackPanel>
             </StackPanel>
-            
+
             <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="0,10,0,0">
+                <Line X1="0" X2="1" Stroke="LightGray" Stretch="Uniform" StrokeThickness="1" Margin="-5,-5,5,5"/>
+
                 <TextBlock x:Name="timerText" FontWeight="Bold" Text="타이머"/>
                 <StackPanel Orientation="Horizontal" Margin="5,2,0,0">
                     <TextBlock x:Name="timerTimeText" Text="타이머 시간"/>
@@ -89,7 +93,7 @@
         </StackPanel>
 
         <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,5,5">
-                <TextBlock Name="guideText" Text="" Foreground="Red"/>
+            <TextBlock Name="guideText" Text="" Foreground="Red"/>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,5,0,0">
                 <Button x:Name="okButton" Content="확인" FontSize="15" Click="okButton_Click"></Button>
                 <Grid Width="20"/>
