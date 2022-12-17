@@ -274,7 +274,8 @@ namespace SeagullsSmartWatch
                     e.Cancel = true;
                 else
                 {
-                    settingWindow.ForceClose();
+                    if(settingWindow != null)
+                        settingWindow.ForceClose();
                 }
             }
         }

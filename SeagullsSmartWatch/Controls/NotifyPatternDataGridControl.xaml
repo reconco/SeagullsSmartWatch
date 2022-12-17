@@ -10,14 +10,14 @@
         <DataGrid Name="patternDataGrid" AutoGenerateColumns="False" SelectionMode="Single" CanUserAddRows="False" CanUserResizeRows="False" CanUserResizeColumns="False"
                   CanUserDeleteRows="False" CanUserSortColumns="False" CanUserReorderColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="시간(초)" Binding="{Binding Time}" Width="55"/>
-                <DataGridTextColumn Header="메시지" Width="*" Binding="{Binding Message}"/>
-                
+                <DataGridTextColumn Header="시간(초)" Binding="{Binding Time, NotifyOnTargetUpdated=True}" Width="55" />
+                <DataGridTextColumn Header="메시지" Width="*" Binding="{Binding Message, NotifyOnTargetUpdated=True}"/>
+
                 <DataGridTemplateColumn  Header="텍스트 색상" Width="75">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button x:Name="textColorButton" HorizontalAlignment="Center" Click="textColorButton_Click" >
-                                <Grid x:Name="textColor" Background="Black" HorizontalAlignment="Center" Width="70" Height="14" Loaded="textColor_Loaded"/>
+                            <Button x:Name="textColorButton" HorizontalAlignment="Center" Click="textColorButton_Click">
+                                <Grid x:Name="textColor" Background="Black" HorizontalAlignment="Center" Width="70" Height="14" Loaded="textColor_Loaded" />
                             </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

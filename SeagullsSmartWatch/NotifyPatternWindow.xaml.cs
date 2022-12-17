@@ -27,12 +27,28 @@ namespace SeagullsSmartWatch
             InitializeComponent();
 
             UpdateCountText();
+            preview.notifyPatternDatas = patternDataGridControl.NotifyPatternDatas;
+            preview.UpdatePreview();
         }
         public NotifyPatternWindow(List<NotifyPatternData> _notifyPatternDatas)
         {
             InitializeComponent();
 
+            patternDataGridControl.patternDataGrid.SelectedCellsChanged += PatternDataGrid_SelectedCellsChanged;
+            patternDataGridControl.patternDataGrid.TargetUpdated += PatternDataGrid_TargetUpdated;
+            patternDataGridControl.NotifyTextColorChanged += PatternDataGridControl_NotifyTextColorChanged;
+
             SetNotifyPatternDatas(_notifyPatternDatas);
+
+            UpdateCountText();
+            preview.notifyPatternDatas = patternDataGridControl.NotifyPatternDatas;
+            preview.UpdatePreview();
+        }
+
+        private void PatternDataGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+            int selectedIdx = patternDataGridControl.patternDataGrid.SelectedIndex;
+            preview.UpdatePreview(selectedIdx);
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
@@ -45,12 +61,18 @@ namespace SeagullsSmartWatch
 
             patternDataGridControl.AddPatternData(newNotifyPatternData);
             UpdateCountText();
+
+            int selectedIdx = patternDataGridControl.patternDataGrid.SelectedIndex;
+            preview.UpdatePreview(selectedIdx);
         }
 
         private void removeButton_Click(object sender, RoutedEventArgs e)
         {
             patternDataGridControl.RemoveSelectedPatternData();
             UpdateCountText();
+
+            int selectedIdx = patternDataGridControl.patternDataGrid.SelectedIndex;
+            preview.UpdatePreview(selectedIdx);
         }
 
         private void helpButton_Click(object sender, RoutedEventArgs e)
@@ -81,6 +103,9 @@ namespace SeagullsSmartWatch
                 return;
 
             patternDataGridControl.MovePatternData(i, i - 1);
+
+            int selectedIdx = patternDataGridControl.patternDataGrid.SelectedIndex;
+            preview.UpdatePreview(selectedIdx);
         }
 
         private void downButton_Click(object sender, RoutedEventArgs e)
@@ -90,6 +115,9 @@ namespace SeagullsSmartWatch
                 return;
 
             patternDataGridControl.MovePatternData(i, i + 1);
+
+            int selectedIdx = patternDataGridControl.patternDataGrid.SelectedIndex;
+            preview.UpdatePreview(selectedIdx);
         }
 
         public void SetNotifyPatternDatas(List<NotifyPatternData> _notifyPatternDatas)
@@ -120,5 +148,17 @@ namespace SeagullsSmartWatch
         {
             countText.Text = patternDataGridControl.NotifyPatternDatas.Count + "/" + NotifyPatternData.MAX_COUNT.ToString();
         }
+        private void PatternDataGridControl_NotifyTextColorChanged(object sender, EventArgs e)
+        {
+            int selectedIdx = patternDataGridControl.patternDataGrid.SelectedIndex;
+            preview.UpdatePreview(selectedIdx);
+        }
+
+        private void PatternDataGrid_TargetUpdated(object sender, DataTransferEventArgs e)
+        {
+            int selectedIdx = patternDataGridControl.patternDataGrid.SelectedIndex;
+            preview.UpdatePreview(selectedIdx);
+        }
+
     }
 }

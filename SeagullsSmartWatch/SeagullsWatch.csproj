@@ -86,9 +86,13 @@
     <Compile Include="Controls\NotifyPatternDataGridControl.xaml.cs">
       <DependentUpon>NotifyPatternDataGridControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\NotifyPatternPreview.xaml.cs">
+      <DependentUpon>NotifyPatternPreview.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\NumberTextbox.xaml.cs">
       <DependentUpon>NumberTextbox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Lib\SeagullMath.cs" />
     <Compile Include="MainWindow.Notification.cs" />
     <Compile Include="MainWindow.SaveData.cs" />
     <Compile Include="NotifyPatternData.cs" />
@@ -109,6 +113,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\NotifyPatternDataGridControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NotifyPatternPreview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
