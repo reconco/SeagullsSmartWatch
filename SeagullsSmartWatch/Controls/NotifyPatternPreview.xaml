@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="SeagullsSmartWatch.NotifyPatternPreview"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SeagullsSmartWatch"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="400" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+    
+    <Border BorderBrush="#688caf" BorderThickness="1">
+        <Canvas x:Name="previewCanvas" Background="#f0f0f0" Loaded="previewCanvas_Loaded">
+            <Rectangle Fill="DodgerBlue"  Stroke="#555599" Height="15" Width="15" Canvas.Left="30" Canvas.Top="30" Margin="-7.5,-7.5"/>
+            <Path Stroke="Black" Data="M 200 200 Q 300 300 200 400"/>
+            <TextBlock Text="테스트" Canvas.Left="200" Canvas.Top="124" FontWeight="Bold" Background="DodgerBlue"/>
+
+        </Canvas>
+    </Border>
+</UserControl>
