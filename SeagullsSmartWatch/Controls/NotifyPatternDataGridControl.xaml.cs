@@ -28,6 +28,8 @@ namespace SeagullsSmartWatch
 
         public DataGrid DataGrid { get { return patternDataGrid; } }
 
+        public event EventHandler NotifyTextColorChanged;
+
         public NotifyPatternDataGridControl()
         {
             InitializeComponent();
@@ -114,6 +116,7 @@ namespace SeagullsSmartWatch
                 var row = GetParent<DataGridRow>((Button)sender);
                 int index = DataGrid.Items.IndexOf(row.Item);
                 NotifyPatternDatas[index].NotifyTextColor = newBrush.Color.ToString();
+                NotifyTextColorChanged(this, null);
             }
         }
 
@@ -132,5 +135,6 @@ namespace SeagullsSmartWatch
             Color _textColor = (Color)ColorConverter.ConvertFromString(NotifyPatternDatas[index].NotifyTextColor);
             ((Grid)sender).Background = new SolidColorBrush(_textColor);
         }
+
     }
 }

@@ -18,6 +18,15 @@ namespace SeagullsSmartWatch
         {
             return radian * 180.0f / (double)Math.PI;
         }
+        public static Point Normalize(Point point)
+        {
+            double val = 1.0f / Math.Sqrt((point.X * point.X) + (point.Y * point.Y));
+
+            point.X *= val;
+            point.Y *= val;
+
+            return point;
+        }
 
         public static Point GetRotatedPointFromOrigin(Point point, Point origin, double angle)
         {

@@ -10,8 +10,8 @@
     <Border BorderBrush="#688caf" BorderThickness="1">
         <Canvas x:Name="previewCanvas" Background="#f0f0f0" Loaded="previewCanvas_Loaded">
             <Rectangle Fill="DodgerBlue"  Stroke="#555599" Height="15" Width="15" Canvas.Left="30" Canvas.Top="30" Margin="-7.5,-7.5"/>
-            <Path Stroke="Black" Data="M 200 200 Q 300 300 200 400"/>
-            <TextBlock Text="테스트" Canvas.Left="200" Canvas.Top="124" FontWeight="Bold" Background="DodgerBlue"/>
+            <Path Stroke="#483d8b" StrokeThickness="2" Data="M 200 200 Q 300 300 200 400"/>
+            <TextBlock Text="테스트" Canvas.Left="200" Canvas.Top="124" FontWeight="Bold" />
 
         </Canvas>
     </Border>
