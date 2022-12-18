@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using static System.Net.Mime.MediaTypeNames;
+using System.Reflection;
 
 namespace SeagullsSmartWatch
 {
@@ -40,6 +41,7 @@ namespace SeagullsSmartWatch
         const int TIMETEXT_WIDTH = 40;
 
         int nodeCount = 0;
+        int selectedIndex = -1;
 
         Size previewSize = Size.Empty;
         Point firstNodePosition = new Point(200, 28);
@@ -61,6 +63,17 @@ namespace SeagullsSmartWatch
             firstNodePosition = new Point(previewSize.Width * 0.5, previewSize.Height * 0.09);
 
             UpdatePreview();
+        }
+
+        private Color GetNodeBorderColor(Color nodeColor)
+        {
+            if(nodeColor.R > 128)
+            {
+                if (nodeColor.B < nodeColor.R)
+                    return Colors.Blue;
+            }
+
+            return Colors.Red;
         }
 
         private void CreateStartNode()
@@ -110,6 +123,20 @@ namespace SeagullsSmartWatch
                 fontColor = Colors.White;
             }
 
+            //Boder
+            Color borderColor = GetNodeBorderColor(color);
+            Border border = null;
+            if (selectedIndex == nodeNumber)
+            {
+                border = new Border()
+                {
+                    BorderBrush = new SolidColorBrush(borderColor),
+                    BorderThickness = new Thickness(1),
+                };
+                previewCanvas.Children.Add(border);
+            }
+
+
             TextBlock nodeText = new TextBlock()
             {
                 Text = msg,
@@ -126,9 +153,18 @@ namespace SeagullsSmartWatch
             Point textOffset = new Point(-NODE_TEXT_WIDTH * 0.5, -NODE_FONT_SIZE * 0.5); //정중앙으로 만드는 오프셋
             Point circlePositionOffset = new Point(nodeDirection.X * (NODE_TEXT_WIDTH * 0.5) , nodeDirection.Y * (NODE_FONT_SIZE * 0.5)); //원의 바깥쪽으로 향하게 하는 오프셋
 
-            previewCanvas.Children.Add(nodeText);
+            if (border != null)
+                border.Child = nodeText;
+            else
+                previewCanvas.Children.Add(nodeText);
             Canvas.SetLeft(nodeText, nodePosition.X + textOffset.X + circlePositionOffset.X);
             Canvas.SetTop(nodeText, nodePosition.Y + textOffset.Y + circlePositionOffset.Y);
+
+            if (border != null)
+            {
+                Canvas.SetLeft(border, nodePosition.X + textOffset.X + circlePositionOffset.X);
+                Canvas.SetTop(border, nodePosition.Y + textOffset.Y + circlePositionOffset.Y);
+            }
         }
 
         private void CreateArrow(int currentNode)
@@ -174,6 +210,18 @@ namespace SeagullsSmartWatch
             };
             previewCanvas.Children.Add(startArrowHead);
 
+            //Boder
+            Border border = null;
+            if (selectedIndex - 1 == currentNode ||
+                (currentNode == nodeCount -1 && selectedIndex == 0)) //첫번째 패턴을 선택했을경우 맨마지막 시간도 붉은색 경계를 넣어준다
+            {
+                border = new Border()
+                {
+                    BorderBrush = new SolidColorBrush(Colors.Red),
+                    BorderThickness = new Thickness(1),
+                };
+                previewCanvas.Children.Add(border);
+            }
 
             //Time
             double textAngle = (currentAangle + nextAngle) * 0.5;
@@ -204,9 +252,18 @@ namespace SeagullsSmartWatch
             Point textOffset = new Point(-TIMETEXT_WIDTH * 0.5, -TIMETEXT_FONT_SIZE * 0.5); //정중앙으로 만드는 오프셋
             Point circlePositionOffset = new Point(-textDirection.X * (TIMETEXT_WIDTH * 0.5) * OFFSET_SCALE, -textDirection.Y * (TIMETEXT_FONT_SIZE * 0.5) * OFFSET_SCALE); //원의 안쪽으로 향하게 하는 오프셋
 
-            previewCanvas.Children.Add(timeText);
+            if (border != null)
+                border.Child = timeText;
+            else
+                previewCanvas.Children.Add(timeText);
             Canvas.SetLeft(timeText, textPosition.X + textOffset.X + circlePositionOffset.X);
             Canvas.SetTop(timeText, textPosition.Y + textOffset.Y + circlePositionOffset.Y);
+
+            if (border != null)
+            {
+                Canvas.SetLeft(border, textPosition.X + textOffset.X + circlePositionOffset.X);
+                Canvas.SetTop(border, textPosition.Y + textOffset.Y + circlePositionOffset.Y);
+            }
         }
 
         private void CreateStartArrow()
@@ -233,7 +290,7 @@ namespace SeagullsSmartWatch
                 StrokeThickness = ARROW_THICKNESS,
             };
             previewCanvas.Children.Add(startArrow);
-            
+
             //Arrow Head
             Path startArrowHead = new Path()
             {
@@ -242,6 +299,20 @@ namespace SeagullsSmartWatch
                 StrokeThickness = ARROW_THICKNESS,
             };
             previewCanvas.Children.Add(startArrowHead);
+
+            //Boder
+            Border border = null;
+            if (selectedIndex == 0)
+            {
+                border = new Border()
+                {
+                    BorderBrush = new SolidColorBrush(Colors.Red),
+                    BorderThickness = new Thickness(1),
+                };
+                previewCanvas.Children.Add(border);
+                Canvas.SetLeft(border, 85);
+                Canvas.SetTop(border, 5);
+            }
 
             //TimeText
             int time = 0;
@@ -258,20 +329,80 @@ namespace SeagullsSmartWatch
                 Width = TIMETEXT_WIDTH,
                 MaxWidth = TIMETEXT_WIDTH,
             };
+            if (border != null)
+                border.Child = timeText;
+            else
+                previewCanvas.Children.Add(timeText);
 
-            previewCanvas.Children.Add(timeText);
             Canvas.SetLeft(timeText, 85);
             Canvas.SetTop(timeText, 5);
         }
 
-        private void CreateFinishArrow()
+        private void CreateLoopArrow()
         {
+            const double startTextX = 200;
+            const double startTextY = 50;
 
+            //Arrow Line
+            Path startArrow = new Path()
+            {
+                Data = Geometry.Parse("M 200 50 Q 105 70 30 50"),
+                Stroke = ARROW_COLOR,
+                StrokeThickness = ARROW_THICKNESS,
+            };
+            previewCanvas.Children.Add(startArrow);
+
+            //Arrow Head
+            Path startArrowHead = new Path()
+            {
+                Data = Geometry.Parse("M 42 44 30 50 39 62"),
+                Stroke = ARROW_COLOR,
+                StrokeThickness = ARROW_THICKNESS,
+            };
+            previewCanvas.Children.Add(startArrowHead);
+
+            //Boder
+            Border border = null;
+            if (selectedIndex == 0)
+            {
+                border = new Border()
+                {
+                    BorderBrush = new SolidColorBrush(Colors.Red),
+                    BorderThickness = new Thickness(1),
+                };
+                previewCanvas.Children.Add(border);
+                Canvas.SetLeft(border, 85);
+                Canvas.SetTop(border, 65);
+            }
+
+            //TimeText
+            int time = 0;
+            if (notifyPatternDatas.Count > 0)
+                time = notifyPatternDatas[0].Time;
+
+            TextBlock timeText = new TextBlock()
+            {
+                Text = time.ToString() + "초",
+                FontSize = TIMETEXT_FONT_SIZE,
+                Background = TIMETEXT_COLOR,
+                TextAlignment = TextAlignment.Center,
+                TextTrimming = TextTrimming.CharacterEllipsis,
+                Width = TIMETEXT_WIDTH,
+                MaxWidth = TIMETEXT_WIDTH,
+            };
+            if (border != null)
+                border.Child = timeText;
+            else
+                previewCanvas.Children.Add(timeText);
+
+            Canvas.SetLeft(timeText, 85);
+            Canvas.SetTop(timeText, 65);
         }
 
-        public void UpdatePreview()
+        public void UpdatePreview(int _selectedIdx = -1)
         {
             previewCanvas.Children.Clear();
+            selectedIndex = _selectedIdx;
 
             if (notifyPatternDatas == null)
                 return;
@@ -280,13 +411,16 @@ namespace SeagullsSmartWatch
 
             nodeCount = notifyPatternDatas.Count;
             for (int i = 0; i < nodeCount; i++)
-            {
                 CreateNode(i);
-            }
-            for (int i = 0; i < nodeCount; i++)
+
+            if (nodeCount == 1)
             {
-                CreateArrow(i);
+                CreateLoopArrow();
+                return;
             }
+
+            for (int i = 0; i < nodeCount; i++)
+                CreateArrow(i);
         }
 
     }
