@@ -29,8 +29,8 @@ namespace SeagullsSmartWatch
         int nodeCount = 0;
 
         Size previewSize = Size.Empty;
-        Point firstNodePosition = new Point(200, 50);
-        Point centerPosition = new Point(200, 200);
+        Point firstNodePosition = new Point(130, 10);
+        double nodeGap = 24;
 
         //참고
         //https://onlab94.tistory.com/353
@@ -42,8 +42,8 @@ namespace SeagullsSmartWatch
         private void previewCanvas_Loaded(object sender, RoutedEventArgs e)
         {
             previewSize = previewCanvas.RenderSize;
-            centerPosition = new Point(previewSize.Width * 0.5, previewSize.Height * 0.5);
-            firstNodePosition = new Point(previewSize.Width * 0.5, previewSize.Height * 0.1);
+            //centerPosition = new Point(previewSize.Width * 0.5, previewSize.Height * 0.5);
+            //firstNodePosition = new Point(previewSize.Width * 0.5, previewSize.Height * 0.1);
 
             UpdatePreview();
         }
@@ -70,40 +70,35 @@ namespace SeagullsSmartWatch
 
         private void CreateNode(int nodeNumber)
         {
-            double angle = 360.0 / nodeCount * nodeNumber;
-            Point nodePosition = SeagullMath.GetRotatedPointFromOrigin(firstNodePosition, centerPosition, angle);
-            Debug.Print(nodeNumber.ToString());
-            Debug.Print(angle.ToString());
 
-            Rectangle node = new Rectangle
-            {
-                Fill = Brushes.DodgerBlue,
-                Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#555599")),
-                StrokeThickness = 2,
-                Height = NODE_SIZE,
-                Width = NODE_SIZE,
-            };
+            //Rectangle node = new Rectangle
+            //{
+            //    Fill = Brushes.DodgerBlue,
+            //    Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#555599")),
+            //    StrokeThickness = 2,
+            //    Height = NODE_SIZE,
+            //    Width = NODE_SIZE,
+            //};
 
-            Point originOffset = new Point(-NODE_SIZE * 0.5, -NODE_SIZE * 0.5);
-
-            previewCanvas.Children.Add(node);
-            Canvas.SetLeft(node, nodePosition.X + originOffset.X);
-            Canvas.SetTop(node, nodePosition.Y + originOffset.Y);
+            //previewCanvas.Children.Add(node);
+            //Canvas.SetLeft(node, nodePosition.X + originOffset.X);
+            //Canvas.SetTop(node, nodePosition.Y + originOffset.Y);
 
 
             //Text
             //double textAngle = (currentAangle + nextAngle) * 0.5;
             //Point textPosition = new Point(firstNodePosition.X, firstNodePosition.Y - 25);
             //textPosition = SeagullMath.GetRotatedPointFromOrigin(firstNodePosition, centerPosition, textAngle);
+            Point nodePosition = new Point(firstNodePosition.X, firstNodePosition.Y + nodeGap * nodeNumber);
 
-            const int TEXT_WIDTH = 60;
-            const int FONT_SIZE = 13;
+            const int TEXT_WIDTH = 140;
+            const int FONT_SIZE = 12;
 
             TextBlock timeText = new TextBlock()
             {
                 Text = "보통 속도입니다",
                 FontWeight = FontWeights.Bold,
-                TextAlignment = TextAlignment.Right,
+                TextAlignment = TextAlignment.Left,
                 Background = new SolidColorBrush(Colors.DodgerBlue),
                 TextTrimming = TextTrimming.CharacterEllipsis,
                 FontSize = FONT_SIZE,
@@ -114,57 +109,57 @@ namespace SeagullsSmartWatch
             Point textOffset = new Point(TEXT_WIDTH * 0.5, 0.0);
 
             previewCanvas.Children.Add(timeText);
-            Canvas.SetLeft(timeText, nodePosition.X + originOffset.X - textOffset.X);
-            Canvas.SetTop(timeText, nodePosition.Y + originOffset.Y);
+            Canvas.SetLeft(timeText, nodePosition.X);
+            Canvas.SetTop(timeText, nodePosition.Y);
         }
 
-        private void CreateArrow(int currentNode)
-        {
-            double currentAangle = 360.0 / nodeCount * currentNode;
-            double nextAngle = 360.0 / nodeCount * (currentNode + 1);
+        //private void CreateArrow(int currentNode)
+        //{
+        //    double currentAangle = 360.0 / nodeCount * currentNode;
+        //    double nextAngle = 360.0 / nodeCount * (currentNode + 1);
 
-            Point startPosition = SeagullMath.GetRotatedPointFromOrigin(firstNodePosition, centerPosition, currentAangle);
-            Point finishPosition = SeagullMath.GetRotatedPointFromOrigin(firstNodePosition, centerPosition, nextAngle);
+        //    Point startPosition = SeagullMath.GetRotatedPointFromOrigin(firstNodePosition, centerPosition, currentAangle);
+        //    Point finishPosition = SeagullMath.GetRotatedPointFromOrigin(firstNodePosition, centerPosition, nextAngle);
 
-            string arrowData = "M " + startPosition.X.ToString() + " " + startPosition.Y.ToString() + " " +
-                               finishPosition.X.ToString() + " " + finishPosition.Y.ToString();
+        //    string arrowData = "M " + startPosition.X.ToString() + " " + startPosition.Y.ToString() + " " +
+        //                       finishPosition.X.ToString() + " " + finishPosition.Y.ToString();
 
-            Path startArrow = new Path()
-            {
-                Data = Geometry.Parse(arrowData),
-                Stroke = Brushes.Black,
-            };
-            previewCanvas.Children.Add(startArrow);
+        //    Path startArrow = new Path()
+        //    {r
+        //        Data = Geometry.Parse(arrowData),
+        //        Stroke = Brushes.Black,
+        //    };
+        //    previewCanvas.Children.Add(startArrow);
 
-            //Path startArrowHead = new Path()
-            //{
-            //    Data = Geometry.Parse("M 130 40 140 50 130 60"),
-            //    Stroke = Brushes.Black,
-            //};
-            //previewCanvas.Children.Add(startArrowHead);
+        //    //Path startArrowHead = new Path()
+        //    //{
+        //    //    Data = Geometry.Parse("M 130 40 140 50 130 60"),
+        //    //    Stroke = Brushes.Black,
+        //    //};
+        //    //previewCanvas.Children.Add(startArrowHead);
 
-            //Text
-            Point originOffset = new Point(-NODE_SIZE * 0.5, -NODE_SIZE * 0.5);
+        //    //Text
+        //    Point originOffset = new Point(-NODE_SIZE * 0.5, -NODE_SIZE * 0.5);
 
-            double textAngle = (currentAangle + nextAngle) * 0.5;
-            Point textPosition = new Point(firstNodePosition.X, firstNodePosition.Y - 25);
-            textPosition = SeagullMath.GetRotatedPointFromOrigin(firstNodePosition, centerPosition, textAngle);
+        //    double textAngle = (currentAangle + nextAngle) * 0.5;
+        //    Point textPosition = new Point(firstNodePosition.X, firstNodePosition.Y - 25);
+        //    textPosition = SeagullMath.GetRotatedPointFromOrigin(firstNodePosition, centerPosition, textAngle);
 
-            TextBlock timeText = new TextBlock()
-            {
-                Text = "10초",
-                TextAlignment = TextAlignment.Center,
-            };
+        //    TextBlock timeText = new TextBlock()
+        //    {
+        //        Text = "10초",
+        //        TextAlignment = TextAlignment.Center,
+        //    };
 
-            previewCanvas.Children.Add(timeText);
-            Canvas.SetLeft(timeText, textPosition.X + originOffset.X);
-            Canvas.SetTop(timeText, textPosition.Y + originOffset.Y);
-        }
+        //    previewCanvas.Children.Add(timeText);
+        //    Canvas.SetLeft(timeText, textPosition.X + originOffset.X);
+        //    Canvas.SetTop(timeText, textPosition.Y + originOffset.Y);
+        //}
 
         private void CreateStartArrow()
         {
-            const double startTextX = 30;
-            const double startTextY = 30;
+            const double startTextX = 10;
+            const double startTextY = 10;
             TextBlock startText = new TextBlock()
             {
                 Text = "시작",
@@ -176,14 +171,14 @@ namespace SeagullsSmartWatch
 
             Path startArrow = new Path()
             {
-                Data = Geometry.Parse("M 20 50 140 50"),
+                Data = Geometry.Parse("M 20 30 120 30"),
                 Stroke = Brushes.Black,
             };
             previewCanvas.Children.Add(startArrow);
 
             Path startArrowHead = new Path()
             {
-                Data = Geometry.Parse("M 130 40 140 50 130 60"),
+                Data = Geometry.Parse("M 110 20 120 30 110 40"),
                 Stroke = Brushes.Black,
             };
             previewCanvas.Children.Add(startArrowHead);
@@ -199,12 +194,12 @@ namespace SeagullsSmartWatch
             previewCanvas.Children.Clear();
             CreateStartArrow();
 
-            nodeCount = 10;
-            for (int i = 0; i < nodeCount; i++)
-            {
-                CreateArrow(i);
+            nodeCount = 14;
+            //for (int i = 0; i < nodeCount; i++)
+            //{
+            //    CreateArrow(i);
 
-            }
+            //}
             for (int i = 0; i < nodeCount; i++)
             {
                 CreateNode(i);
