@@ -371,8 +371,8 @@ namespace SeagullsSmartWatch
                     BorderThickness = new Thickness(1),
                 };
                 previewCanvas.Children.Add(border);
-                Canvas.SetLeft(border, 85);
-                Canvas.SetTop(border, 65);
+                Canvas.SetLeft(border, 220);
+                Canvas.SetTop(border, 128);
             }
 
             //TimeText
