@@ -346,7 +346,7 @@ namespace SeagullsSmartWatch
             //Arrow Line
             Path startArrow = new Path()
             {
-                Data = Geometry.Parse("M 200 50 Q 105 70 30 50"),
+                Data = Geometry.Parse("M 220 50 A 50 50 0 1 0 260 50"),
                 Stroke = ARROW_COLOR,
                 StrokeThickness = ARROW_THICKNESS,
             };
@@ -355,7 +355,7 @@ namespace SeagullsSmartWatch
             //Arrow Head
             Path startArrowHead = new Path()
             {
-                Data = Geometry.Parse("M 42 44 30 50 39 62"),
+                Data = Geometry.Parse("M 206 46 220 50 216 67"),
                 Stroke = ARROW_COLOR,
                 StrokeThickness = ARROW_THICKNESS,
             };
@@ -395,8 +395,8 @@ namespace SeagullsSmartWatch
             else
                 previewCanvas.Children.Add(timeText);
 
-            Canvas.SetLeft(timeText, 85);
-            Canvas.SetTop(timeText, 65);
+            Canvas.SetLeft(timeText, 220);
+            Canvas.SetTop(timeText, 128);
         }
 
         public void UpdatePreview(int _selectedIdx = -1)
