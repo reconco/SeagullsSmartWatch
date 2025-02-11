@@ -43,7 +43,9 @@ namespace SeagullsSmartWatch
         int nodeCount = 0;
         int selectedIndex = -1;
 
-        Size previewSize = Size.Empty;
+        const int SELECTED_BORDER_THICKNESS = 2;
+
+		Size previewSize = Size.Empty;
         Point firstNodePosition = new Point(200, 28);
         Point centerPosition = new Point(200, 200);
 
@@ -131,7 +133,7 @@ namespace SeagullsSmartWatch
                 border = new Border()
                 {
                     BorderBrush = new SolidColorBrush(borderColor),
-                    BorderThickness = new Thickness(1),
+                    BorderThickness = new Thickness(SELECTED_BORDER_THICKNESS),
                 };
                 previewCanvas.Children.Add(border);
             }
@@ -185,8 +187,15 @@ namespace SeagullsSmartWatch
                 Data = Geometry.Parse(arrowData),
                 Stroke = ARROW_COLOR,
                 StrokeThickness = ARROW_THICKNESS,
+
+                    
             };
-            previewCanvas.Children.Add(startArrow);
+            if (selectedIndex - 1 == currentNode)
+                startArrow.StrokeThickness = ARROW_THICKNESS * 2;
+            else if(selectedIndex == 0 && currentNode == nodeCount - 1) //첫번째 패턴을 선택했을경우 맨마지막 화살표도 두껍게
+				startArrow.StrokeThickness = ARROW_THICKNESS * 2;
+
+			previewCanvas.Children.Add(startArrow);
 
             //Arrow Head
             Point arrowDirection = new Point(startPosition.X - finishPosition.X, startPosition.Y - finishPosition.Y);
@@ -218,7 +227,7 @@ namespace SeagullsSmartWatch
                 border = new Border()
                 {
                     BorderBrush = new SolidColorBrush(Colors.Red),
-                    BorderThickness = new Thickness(1),
+                    BorderThickness = new Thickness(SELECTED_BORDER_THICKNESS),
                 };
                 previewCanvas.Children.Add(border);
             }
@@ -289,7 +298,10 @@ namespace SeagullsSmartWatch
                 Stroke = ARROW_COLOR,
                 StrokeThickness = ARROW_THICKNESS,
             };
-            previewCanvas.Children.Add(startArrow);
+            if(selectedIndex == 0)
+				startArrow.StrokeThickness = ARROW_THICKNESS * 2;
+
+			previewCanvas.Children.Add(startArrow);
 
             //Arrow Head
             Path startArrowHead = new Path()
@@ -307,7 +319,7 @@ namespace SeagullsSmartWatch
                 border = new Border()
                 {
                     BorderBrush = new SolidColorBrush(Colors.Red),
-                    BorderThickness = new Thickness(1),
+                    BorderThickness = new Thickness(SELECTED_BORDER_THICKNESS),
                 };
                 previewCanvas.Children.Add(border);
                 Canvas.SetLeft(border, 85);
@@ -368,7 +380,7 @@ namespace SeagullsSmartWatch
                 border = new Border()
                 {
                     BorderBrush = new SolidColorBrush(Colors.Red),
-                    BorderThickness = new Thickness(1),
+                    BorderThickness = new Thickness(SELECTED_BORDER_THICKNESS),
                 };
                 previewCanvas.Children.Add(border);
                 Canvas.SetLeft(border, 220);
