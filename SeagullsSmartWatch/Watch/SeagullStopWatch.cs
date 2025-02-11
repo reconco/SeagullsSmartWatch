@@ -70,8 +70,14 @@ namespace SeagullsSmartWatch
                     nextNotifyTime += new TimeSpan(MainWindow.setting.useNotify_hours, MainWindow.setting.useNotify_minutes, MainWindow.setting.useNotify_seconds);
             }
             else if (MainWindow.setting.useNotifyPattern)
-            {
-                nextNotifyPatternData = MainWindow.setting.notifyPatterns[curNotifyTimeIndex];
+			{
+                if (curNotifyTimeIndex >= MainWindow.setting.notifyPatterns.Count)
+                    curNotifyTimeIndex = 0;
+
+                if (MainWindow.setting.notifyPatterns.Count == 0)
+                    return;
+
+				nextNotifyPatternData = MainWindow.setting.notifyPatterns[curNotifyTimeIndex];
                 TimeSpan ts = new TimeSpan(0, 0, MainWindow.setting.notifyPatterns[curNotifyTimeIndex].Time);
                 nextNotifyTime += ts;
 
@@ -80,8 +86,6 @@ namespace SeagullsSmartWatch
                     nextNotifyTime += ts;
 
                 curNotifyTimeIndex++;
-                if (curNotifyTimeIndex >= MainWindow.setting.notifyPatterns.Count)
-                    curNotifyTimeIndex = 0;
             }
         }
     }
