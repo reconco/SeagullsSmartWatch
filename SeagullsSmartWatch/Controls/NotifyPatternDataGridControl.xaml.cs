@@ -91,6 +91,12 @@ namespace SeagullsSmartWatch
 
         }
 
+        public void ClearAllPatternData()
+        {
+			this.notifyPatternDatas.Clear();
+			patternDataGrid.Items.Refresh();
+		}
+
         private void textColor_Initialized(object sender, EventArgs e)
         {
         }

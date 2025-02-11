@@ -24,6 +24,7 @@
                 <!--<Button Name="helpButton" Content="도움말" MaxHeight="20" Margin="7,0,7,0" Click="helpButton_Click"/>-->
                 <Button Name="upButton" Content=" ▲ " MaxHeight="20" Margin="7,0,7,0" Click="upButton_Click"/>
                 <Button Name="downButton" Content=" ▼ " MaxHeight="20" Margin="7,0,7,0" Click="downButton_Click"/>
+                <Button Name="clearButton" Content="전체 삭제" MaxHeight="20" Margin="12,0,12,0" Click="clearButton_Click"/>
                 <TextBlock Name="countText" Text="1/16" HorizontalAlignment="Right" Margin="0,5,0,5"/>
             </StackPanel>
             <TextBlock Text="* 현재 창에서 '확인'을 누르고 설정 창에서도 '확인'을 눌러야 &#10; 변경사항이 저장됩니다." HorizontalAlignment="Center" Margin="0,5,0,5"/>

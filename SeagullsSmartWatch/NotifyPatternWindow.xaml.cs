@@ -73,9 +73,17 @@ namespace SeagullsSmartWatch
 
             int selectedIdx = patternDataGridControl.patternDataGrid.SelectedIndex;
             preview.UpdatePreview(selectedIdx);
-        }
+		}
+		private void clearButton_Click(object sender, RoutedEventArgs e)
+		{
+			patternDataGridControl.ClearAllPatternData();
+			UpdateCountText();
 
-        private void helpButton_Click(object sender, RoutedEventArgs e)
+			int selectedIdx = patternDataGridControl.patternDataGrid.SelectedIndex;
+			preview.UpdatePreview(selectedIdx);
+		}
+
+		private void helpButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
